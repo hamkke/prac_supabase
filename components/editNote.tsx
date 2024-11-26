@@ -65,6 +65,13 @@ export default function EditNote({
     setActiveNoteId(null);
   };
 
+  if (!note) {
+    return (
+      <div className='flex w-3/4 absolute top-0 bottom-0 right-0 font-bold text-5xl justify-center items-center'>
+        검색 중
+      </div>
+    );
+  }
   return (
     <div className='p-2 flex flex-col w-3/4 gap-2 absolute top-0 bottom-0 right-0'>
       <div className='flex w-full justify-start my-2'>

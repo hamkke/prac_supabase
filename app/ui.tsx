@@ -16,12 +16,16 @@ export default function Ui() {
     Database['public']['Tables']['note']['Row'][] | undefined
   >([]);
 
+  const [search, setSearch] = useState('');
+
   const fetchNotes = async () => {
     const { data, error } = await supabase
       .from('note')
       .select('*')
       // 원하는 colunm의 오름 또는 내림차순
-      .order('created_at', { ascending: true });
+      .order('created_at', { ascending: true })
+      .ilike('title', `%${search}%`);
+
     if (error) {
       alert(error.message);
       return;
@@ -32,6 +36,10 @@ export default function Ui() {
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  useEffect(() => {
+    fetchNotes();
+  }, [search]);
 
   if (!notes) {
     return 'WRONG';
@@ -46,6 +54,8 @@ export default function Ui() {
           setActiveNoteId={setActiveNoteId}
           setIsCreating={setIsCreating}
           notes={notes}
+          search={search}
+          setSearch={setSearch}
         />
         {/* mainContents */}
         {isCreating ? (
